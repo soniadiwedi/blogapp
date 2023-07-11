@@ -18,15 +18,15 @@ const blogSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  comments: [{
-    username: String,
-    content: String,
-  }],
-  userID:String
+  // likes: {
+  //   type: Number,
+  //   default: 0,
+  // },
+  // comments: [{
+  //   username: String,
+  //   content: String,
+  // }],
+  // userID:String
 });
 
 const BlogModel = mongoose.model('Blog', blogSchema);
