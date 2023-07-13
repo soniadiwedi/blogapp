@@ -4,36 +4,63 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../model/user.model");
 
-userRouter.post("/register", async (req, res) => {
-    try {
+// userRouter.post("/register", async (req, res) => {
+//     try {
         
-        const { username, email, password } = req.body;
+//         const { username, email, password } = req.body;
     
-        // Check if the username or email already exists in the database
-        const existingUser = await UserModel.findOne({ $or: [{ username }, { email }] });
-        if (existingUser) {
-          return res.status(409).json({ message: 'Username or email already exists' });
-        }
+//         // Check if the username or email already exists in the database
+//         const existingUser = await UserModel.findOne({ $or: [{ username }, { email }] });
+//         if (existingUser) {
+//           return res.status(409).json({ message: 'Username or email already exists' });
+//         }
     
-        // Hash the password
-            const hashedPassword = await bcrypt.hash(password, 10);
+//         // Hash the password
+//             const hashedPassword = await bcrypt.hash(password, 10);
         
-        // Create a new user
-        const newUser = new UserModel({
-          username,
-          email,
-          password: hashedPassword,
-        });
+//         // Create a new user
+//         const newUser = new UserModel({
+//           username,
+//           email,
+//           password: hashedPassword,
+//         });
     
-        // Save the user to the database
-        await newUser.save();
+//         // Save the user to the database
+//         await newUser.save();
     
-        res.status(201).json({ message: 'User registered successfully' });
-      } catch (error) {
-        console.error('Error registering user:', error);
-        res.status(500).json({ message: 'Internal server error' });
-      }
-  });
+//         res.status(201).json({ message: 'User registered successfully' });
+//       } catch (error) {
+//         console.error('Error registering user:', error);
+//         res.status(500).json({ message: 'Internal server error' });
+//       }
+//   });
+userRouter.post("/signup", async (req, res) => {
+  const { name, email, password, confirmedPassword } = req.body;
+
+  if (password !== confirmedPassword) {
+    return res.status(400).send("Passwords do not match");
+  }
+
+  const existUser = await UserModel.findOne({ email: email });
+  if (existUser) {
+    return res.status(400).send("User already exists");
+  }
+
+  try {
+    bcrypt.hash(password, 5, async (err, hash) => {
+      const newUser = new UserModel({
+        name,
+        email,
+        password: hash,
+        confirmedPassword: confirmedPassword, 
+      });
+      await newUser.save();
+      res.status(201).send({ msg: "Registration has been done", newUser });
+    });
+  } catch (err) {
+    res.status(400).send({ msg: err.message });
+  }
+});
 
 userRouter.post("/login",async(req,res)=>{
     const { email, password } = req.body;
