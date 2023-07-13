@@ -9,8 +9,8 @@ const userSchema=mongoose.Schema({
     {versionKey:false}
 )
 
-const UserModel=mongoose.model('user',userSchema)
-module.exports={UserModel}
+const User=mongoose.model('user',userSchema)
+module.exports={User}
 
 // {
 //     "email":"soniadiwedi@gmail.com",
