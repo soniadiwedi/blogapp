@@ -71,3 +71,9 @@ employeeRoute.delete('/employees/:id', async (req, res) => {
     }
   });
 module.exports=employeeRoute
+
+// "firstName":"chunnu",
+// "lastName":"bhattacharya",
+// "email":"chunnu@gmail.com",
+// "department":"Operations",
+// "salary":8000

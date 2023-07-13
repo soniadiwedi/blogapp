@@ -5,15 +5,15 @@ const connection = require("./db")
 const userRouter = require("./routes/user")
 const employeeRoute = require("./routes/employee")
 const app=express()
-dotenv.config()
 app.use(cors())
+dotenv.config()
 app.use(express.json())
 
 app.get("/",(req,res)=>{
     res.send("<h1>Hello World</h1>")
 })
 
-app.use('/',userRouter)
+app.use('/user',userRouter)
 app.use("/",employeeRoute)
 const port =process.env.PORT||5000
 app.listen(port,async(req,res)=>{

@@ -2,10 +2,13 @@ const express = require("express");
 const userRouter = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const User = require("../model/userModel");
 
-const { User } = require("../model/userModel");
-userRouter.post("/signup", async (req, res) => {
-  try {
+
+
+
+userRouter.post("/signup", async(req, res) => {
+ 
     const {  email, password, confirmedPassword } = req.body;
 
     if (password !== confirmedPassword) {
@@ -16,22 +19,20 @@ userRouter.post("/signup", async (req, res) => {
     if (existingUser) {
       return res.status(400).send("User already exists");
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new UserModel({
-    
-      email,
-      password: hashedPassword,
-      confirmedPassword: confirmedPassword,
-    });
-
+    try {
+    bcrypt.hash(password,5,async(err,hash)=>{
+      const newUser = new User({
+        email,
+        password:hash,
+        confirmedPassword:confirmedPassword,
+      });
     await newUser.save();
-
     res.status(201).send({ msg: "Registration has been done", newUser });
+    })
+
   } catch (err) {
     console.error(err);
-    res.status(500).send({ msg: "Internal Server Error" });
+    res.status(500).send({ msg: err.message});
   }
 });
 
