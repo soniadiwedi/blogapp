@@ -5,9 +5,9 @@ const connection = require("./db")
 const userRouter = require("./routes/user")
 const employeeRoute = require("./routes/employee")
 const app=express()
-app.use(cors())
 dotenv.config()
 app.use(express.json())
+app.use(cors())
 
 app.get("/",(req,res)=>{
     res.send("<h1>Hello World</h1>")
