@@ -15,13 +15,16 @@ app.get("/",(req,res)=>{
 
 app.use('/user',userRouter)
 app.use("/",employeeRoute)
-const port =process.env.PORT||5000
-app.listen(port,async(req,res)=>{
+
+
+
+
+app.listen(process.env.PORT, async(req,res)=>{
     try{
         await connection
         console.log("server connected to mongoDB");
     }catch(err){
         console.log(err)
     }
-    console.log(`server is runnint ${port}`)
+    console.log(`server is runnint ${process.env.PORT}`)
 })
