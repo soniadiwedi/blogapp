@@ -4,7 +4,7 @@ const { authenticateToken } = require('../middleware/authmiddleware')
 
 const employeeRoute=express.Router()
 
-employeeRoute.post("/employees",async(req,res)=>{
+employeeRoute.post("/create",async(req,res)=>{
     const payload=req.body
     try{
         const emp=new EmployeeModel(payload)
@@ -15,7 +15,7 @@ employeeRoute.post("/employees",async(req,res)=>{
     }
 })
 // localhost:3100/employees?page=1&limit=2&department=Operations
-employeeRoute.get('/employees',authenticateToken ,async (req, res) => {
+employeeRoute.get('/list',authenticateToken ,async (req, res) => {
     try {
       const { page = 1, limit = 5, department, sortBy = 'firstName' } = req.query;
       const filter = {};
@@ -43,7 +43,7 @@ employeeRoute.get('/employees',authenticateToken ,async (req, res) => {
 
 
 //updating
-employeeRoute.patch("/employee/:id",authenticateToken,async(req,res)=>{
+employeeRoute.patch("/update/:id",authenticateToken,async(req,res)=>{
     const {id}=req.params
     const data=req.body
     try{
@@ -55,7 +55,7 @@ employeeRoute.patch("/employee/:id",authenticateToken,async(req,res)=>{
 })
 
 
-employeeRoute.delete('/employees/:id', async (req, res) => {
+employeeRoute.delete('/delete/:id', async (req, res) => {
     try {
       const employeeId = req.params.id;
       const deletedEmployee = await EmployeeModel.findByIdAndDelete(employeeId);
