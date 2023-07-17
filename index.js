@@ -1,30 +1,29 @@
-const express=require("express")
-const dotenv=require("dotenv")
+const express=require('express')
 const cors=require('cors')
-const connection = require("./db")
-const userRouter = require("./routes/user")
-const employeeRoute = require("./routes/employee")
-const app=express()
-dotenv.config()
+const connection = require('./db')
+
+require('dotenv').config()
+const boardRoutes = require("./routes/board");
+const taskRoutes  = require("./routes/task")
+const subtaskRoutes = require("./routes/subtask")
+const app = express()
 app.use(express.json())
 app.use(cors())
-
 app.get("/",(req,res)=>{
-    res.send("<h1>Hello World</h1>")
+    res.send(`<h1>Hello</h1>`)
 })
 
-app.use('/user',userRouter)
-app.use("/employee",employeeRoute)
+app.use("/boards", boardRoutes);
+app.use("/tasks", taskRoutes);
+app.use("/subtasks", subtaskRoutes);
 
 
-
-
-app.listen(process.env.PORT, async(req,res)=>{
+app.listen(process.env.PORT,async(req,res)=>{
     try{
         await connection
-        console.log("server connected to mongoDB");
+        console.log("server is connected to db");
     }catch(err){
         console.log(err)
     }
-    console.log(`server is runnint ${process.env.PORT}`)
+    console.log(`server is running on ${process.env.PORT}`);
 })
